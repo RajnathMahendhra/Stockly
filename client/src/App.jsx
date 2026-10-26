@@ -1,46 +1,55 @@
-import { useState } from 'react';
-import { BrowserRouter, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
-import Navbar from './components/Navbar.jsx';
-import HomePage from './pages/HomePage.jsx';
-import CoursesPage from './pages/CoursesPage.jsx';
-import LoginPage from './pages/LoginPage.jsx';
-import RegisterPage from './pages/RegisterPage.jsx';
-import './App.css';
-import './routing.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import Navbar from './components/common/Navbar';
+import Footer from './components/common/Footer';
 
-function AppLayout() {
-  const [token, setToken] = useState(() => localStorage.getItem('lms_token') || '');
-  const [message, setMessage] = useState('');
-  const navigate = useNavigate();
+// Pages
+import LandingPage from './pages/LandingPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import DashboardPage from './pages/DashboardPage';
+import StockExplorerPage from './pages/StockExplorerPage';
+import PredictionStudioPage from './pages/PredictionStudioPage';
+import ModelComparisonPage from './pages/ModelComparisonPage';
+import TechnicalAnalysisPage from './pages/TechnicalAnalysisPage';
+import WatchlistPage from './pages/WatchlistPage';
+import PredictionHistoryPage from './pages/PredictionHistoryPage';
+import AboutAiPage from './pages/AboutAiPage';
+import ProfileSettingsPage from './pages/ProfileSettingsPage';
+import DocumentationPage from './pages/DocumentationPage';
 
-  function login(newToken) {
-    localStorage.setItem('lms_token', newToken);
-    setToken(newToken);
-  }
-
-  function logout() {
-    localStorage.removeItem('lms_token');
-    setToken('');
-    setMessage('You are signed out.');
-    navigate('/');
-  }
-
-  return <>
-    <Navbar token={token} onLogout={logout} />
-    <main className="container">
-      {message && <div className="message" role="status">{message}<button onClick={() => setMessage('')}>×</button></div>}
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/courses" element={<CoursesPage token={token} onMessage={setMessage} />} />
-        <Route path="/login" element={<LoginPage onLogin={login} onMessage={setMessage} />} />
-        <Route path="/register" element={<RegisterPage onMessage={setMessage} />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </main>
-    <footer className="footer">Learnly · Keep learning, one course at a time.</footer>
-  </>;
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <div className="flex flex-col min-h-screen bg-[#080b11] text-slate-100 selection:bg-emerald-500/30 selection:text-emerald-200">
+          <Navbar />
+          <main className="flex-1">
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/stocks" element={<StockExplorerPage />} />
+              <Route path="/stocks/:symbol" element={<StockExplorerPage />} />
+              <Route path="/predict" element={<PredictionStudioPage />} />
+              <Route path="/models" element={<ModelComparisonPage />} />
+              <Route path="/technicals" element={<TechnicalAnalysisPage />} />
+              <Route path="/watchlist" element={<WatchlistPage />} />
+              <Route path="/history" element={<PredictionHistoryPage />} />
+              <Route path="/about-ai" element={<AboutAiPage />} />
+              <Route path="/profile" element={<ProfileSettingsPage />} />
+              <Route path="/docs" element={<DocumentationPage />} />
+              {/* Catch-all redirect */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </Router>
+    </AuthProvider>
+  );
 }
 
-export default function App() {
-  return <BrowserRouter><AppLayout /></BrowserRouter>;
-}
+export default App;

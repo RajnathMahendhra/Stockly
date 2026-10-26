@@ -1,0 +1,197 @@
+{
+  "symbol": "AAPL",
+  "company_profile": {
+    "name": "Apple Inc.",
+    "exchange": "NASDAQ",
+    "currency": "USD",
+    "sector": "Technology",
+    "country": "USA",
+    "symbol": "AAPL"
+  },
+  "trained_at": "2026-10-25T17:43:45.849402",
+  "total_observations": 451,
+  "train_samples": 360,
+  "test_samples": 91,
+  "date_ranges": {
+    "train_start": "2025-01-06",
+    "train_end": "2026-06-12",
+    "test_start": "2026-06-15",
+    "test_end": "2026-10-22"
+  },
+  "best_model": "naive_baseline",
+  "models": {
+    "naive_baseline": {
+      "mae": 3.8487,
+      "rmse": 5.4609,
+      "directional_accuracy": 0.0,
+      "mape": 1.22,
+      "r2": 0.8928
+    },
+    "linear_regression": {
+      "mae": 70.1189,
+      "rmse": 71.6978,
+      "directional_accuracy": 45.05,
+      "mape": 21.69,
+      "r2": -17.4759
+    },
+    "random_forest": {
+      "mae": 80.4627,
+      "rmse": 82.1488,
+      "directional_accuracy": 45.05,
+      "mape": 24.95,
+      "r2": -23.2547
+    },
+    "xgboost": {
+      "mae": 76.973,
+      "rmse": 79.2687,
+      "directional_accuracy": 45.05,
+      "mape": 23.81,
+      "r2": -21.5838
+    },
+    "lstm": {
+      "mae": 79.4074,
+      "rmse": 80.2328,
+      "directional_accuracy": 45.05,
+      "mape": 24.62,
+      "r2": -22.1365
+    }
+  },
+  "feature_importances": {
+    "naive_baseline": [
+      {
+        "feature": "Last_Close_Price",
+        "importance": 100.0,
+        "percentage": 100.0
+      }
+    ],
+    "linear_regression": [
+      {
+        "feature": "sma_50_ratio",
+        "importance": -28.6063,
+        "percentage": 21.52
+      },
+      {
+        "feature": "macd_hist",
+        "importance": -22.0156,
+        "percentage": 16.56
+      },
+      {
+        "feature": "sma_10_ratio",
+        "importance": 20.2594,
+        "percentage": 15.24
+      },
+      {
+        "feature": "macd_signal",
+        "importance": 16.3082,
+        "percentage": 12.27
+      },
+      {
+        "feature": "sma_20_ratio",
+        "importance": 15.5844,
+        "percentage": 11.72
+      },
+      {
+        "feature": "bb_lower_ratio",
+        "importance": -12.5778,
+        "percentage": 9.46
+      },
+      {
+        "feature": "volatility_20",
+        "importance": -9.6613,
+        "percentage": 7.27
+      },
+      {
+        "feature": "macd",
+        "importance": 7.9073,
+        "percentage": 5.95
+      }
+    ],
+    "random_forest": [
+      {
+        "feature": "macd_signal",
+        "importance": 34.03,
+        "percentage": 34.03
+      },
+      {
+        "feature": "volatility_20",
+        "importance": 25.58,
+        "percentage": 25.58
+      },
+      {
+        "feature": "macd",
+        "importance": 15.32,
+        "percentage": 15.32
+      },
+      {
+        "feature": "macd_hist",
+        "importance": 5.15,
+        "percentage": 5.15
+      },
+      {
+        "feature": "sma_50_ratio",
+        "importance": 3.11,
+        "percentage": 3.11
+      },
+      {
+        "feature": "bb_upper_ratio",
+        "importance": 2.23,
+        "percentage": 2.23
+      },
+      {
+        "feature": "bb_lower_ratio",
+        "importance": 2.04,
+        "percentage": 2.04
+      },
+      {
+        "feature": "sma_20_ratio",
+        "importance": 2.0,
+        "percentage": 2.0
+      }
+    ],
+    "xgboost": [
+      {
+        "feature": "macd_signal",
+        "importance": 18.76,
+        "percentage": 18.76
+      },
+      {
+        "feature": "macd",
+        "importance": 16.44,
+        "percentage": 16.44
+      },
+      {
+        "feature": "volatility_20",
+        "importance": 12.97,
+        "percentage": 12.97
+      },
+      {
+        "feature": "sma_50_ratio",
+        "importance": 7.91,
+        "percentage": 7.91
+      },
+      {
+        "feature": "macd_hist",
+        "importance": 6.64,
+        "percentage": 6.64
+      },
+      {
+        "feature": "sma_20_ratio",
+        "importance": 4.51,
+        "percentage": 4.51
+      },
+      {
+        "feature": "bb_upper_ratio",
+        "importance": 4.45,
+        "percentage": 4.45
+      },
+      {
+        "feature": "rsi_14",
+        "importance": 3.41,
+        "percentage": 3.41
+      }
+    ],
+    "lstm": []
+  },
+  "latest_close": 348.2200012207031,
+  "latest_date": "2026-10-22"
+}
