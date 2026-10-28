@@ -1,0 +1,197 @@
+{
+  "symbol": "INFY.NS",
+  "company_profile": {
+    "name": "Infosys Limited",
+    "exchange": "NSE",
+    "currency": "INR",
+    "sector": "IT Services",
+    "country": "India",
+    "symbol": "INFY.NS"
+  },
+  "trained_at": "2026-10-28T23:24:26.253712",
+  "total_observations": 446,
+  "train_samples": 356,
+  "test_samples": 90,
+  "date_ranges": {
+    "train_start": "2025-01-08",
+    "train_end": "2026-06-17",
+    "test_start": "2026-06-18",
+    "test_end": "2026-10-27"
+  },
+  "best_model": "naive_baseline",
+  "models": {
+    "naive_baseline": {
+      "mae": 18.1739,
+      "rmse": 23.6641,
+      "directional_accuracy": 0.0,
+      "mape": 1.67,
+      "r2": 0.8281
+    },
+    "linear_regression": {
+      "mae": 412.0803,
+      "rmse": 420.5039,
+      "directional_accuracy": 42.22,
+      "mape": 38.02,
+      "r2": -53.2794
+    },
+    "random_forest": {
+      "mae": 368.4713,
+      "rmse": 397.3164,
+      "directional_accuracy": 42.22,
+      "mape": 33.83,
+      "r2": -47.4583
+    },
+    "xgboost": {
+      "mae": 382.6185,
+      "rmse": 415.7349,
+      "directional_accuracy": 42.22,
+      "mape": 35.16,
+      "r2": -52.0552
+    },
+    "lstm": {
+      "mae": 360.4377,
+      "rmse": 440.6651,
+      "directional_accuracy": 47.78,
+      "mape": 33.26,
+      "r2": -58.609
+    }
+  },
+  "feature_importances": {
+    "naive_baseline": [
+      {
+        "feature": "Last_Close_Price",
+        "importance": 100.0,
+        "percentage": 100.0
+      }
+    ],
+    "linear_regression": [
+      {
+        "feature": "macd_hist",
+        "importance": -293.885,
+        "percentage": 23.15
+      },
+      {
+        "feature": "sma_10_ratio",
+        "importance": 203.0299,
+        "percentage": 15.99
+      },
+      {
+        "feature": "sma_20_ratio",
+        "importance": 194.8677,
+        "percentage": 15.35
+      },
+      {
+        "feature": "sma_50_ratio",
+        "importance": -178.829,
+        "percentage": 14.09
+      },
+      {
+        "feature": "bb_upper_ratio",
+        "importance": -142.203,
+        "percentage": 11.2
+      },
+      {
+        "feature": "return_5d",
+        "importance": -100.5231,
+        "percentage": 7.92
+      },
+      {
+        "feature": "bb_pct_b",
+        "importance": -78.2541,
+        "percentage": 6.16
+      },
+      {
+        "feature": "lag_5",
+        "importance": -77.9691,
+        "percentage": 6.14
+      }
+    ],
+    "random_forest": [
+      {
+        "feature": "macd_signal",
+        "importance": 42.74,
+        "percentage": 42.74
+      },
+      {
+        "feature": "volatility_20",
+        "importance": 27.6,
+        "percentage": 27.6
+      },
+      {
+        "feature": "macd_hist",
+        "importance": 5.48,
+        "percentage": 5.48
+      },
+      {
+        "feature": "sma_50_ratio",
+        "importance": 4.5,
+        "percentage": 4.5
+      },
+      {
+        "feature": "macd",
+        "importance": 3.66,
+        "percentage": 3.66
+      },
+      {
+        "feature": "bb_lower_ratio",
+        "importance": 2.49,
+        "percentage": 2.49
+      },
+      {
+        "feature": "rsi_14",
+        "importance": 2.14,
+        "percentage": 2.14
+      },
+      {
+        "feature": "volume_ratio",
+        "importance": 1.87,
+        "percentage": 1.87
+      }
+    ],
+    "xgboost": [
+      {
+        "feature": "macd_signal",
+        "importance": 24.55,
+        "percentage": 24.55
+      },
+      {
+        "feature": "volatility_20",
+        "importance": 14.73,
+        "percentage": 14.73
+      },
+      {
+        "feature": "macd_hist",
+        "importance": 7.09,
+        "percentage": 7.09
+      },
+      {
+        "feature": "sma_50_ratio",
+        "importance": 7.03,
+        "percentage": 7.03
+      },
+      {
+        "feature": "macd",
+        "importance": 5.88,
+        "percentage": 5.88
+      },
+      {
+        "feature": "bb_lower_ratio",
+        "importance": 5.66,
+        "percentage": 5.66
+      },
+      {
+        "feature": "bb_upper_ratio",
+        "importance": 5.23,
+        "percentage": 5.23
+      },
+      {
+        "feature": "lag_5",
+        "importance": 4.88,
+        "percentage": 4.88
+      }
+    ],
+    "lstm": []
+  },
+  "latest_close": 1163.0,
+  "latest_date": "2026-10-27"
+}

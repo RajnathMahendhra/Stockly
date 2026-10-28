@@ -178,7 +178,12 @@ const TechnicalAnalysisPage = () => {
       ) : (
         <>
           {/* Charts */}
-          <PriceAreaChart data={history} symbol={symbol} />
+          <PriceAreaChart
+            data={history}
+            symbol={symbol}
+            currentPeriod={period}
+            onPeriodChange={(p) => setPeriod(p)}
+          />
           <IndicatorChart data={indicators} activeIndicator="rsi" />
 
           {/* Academic Indicator Reference Cards */}

@@ -66,12 +66,13 @@ class MarketDataService {
    */
   static async getHistory(symbol, period = '1y') {
     const sym = symbol.toUpperCase().trim();
+    const normPeriod = period.toLowerCase() === '1m' ? '1mo' : period;
     const stock = await this.getStock(sym);
 
     // Call ML service data feed to get normalized and cleaned OHLCV data
     let data;
     try {
-      data = await MLClientService.fetchHistory(sym, period);
+      data = await MLClientService.fetchHistory(sym, normPeriod);
     } catch (error) {
       console.warn(`[MarketDataService] ML service fetch failed, querying MongoDB cache: ${error.message}`);
       // Fallback: Query MongoDB HistoricalPrice collection
@@ -152,7 +153,7 @@ class MarketDataService {
    * Compute comprehensive technical indicators from raw historical bars
    */
   static computeTechnicalIndicators(historyBars) {
-    if (!historyBars || historyBars.length < 20) {
+    if (!historyBars || historyBars.length < 5) {
       return [];
     }
 

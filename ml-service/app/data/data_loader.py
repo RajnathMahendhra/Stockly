@@ -55,8 +55,11 @@ def fetch_historical_data(symbol: str, period: str = "2y", use_cache: bool = Tru
     Validates chronological ordering and absence of lookahead artifacts.
     """
     sym = symbol.upper().strip()
-    cache_path = os.path.join(CACHE_DIR, f"{sym}_{period}.csv")
-    meta_path = os.path.join(CACHE_DIR, f"{sym}_{period}.json")
+    norm_period = "1mo" if period.lower() in ["1m", "1mo"] else period.lower()
+    min_required = 10 if norm_period == "1mo" else (20 if norm_period == "3mo" else 30)
+
+    cache_path = os.path.join(CACHE_DIR, f"{sym}_{norm_period}.csv")
+    meta_path = os.path.join(CACHE_DIR, f"{sym}_{norm_period}.json")
 
     # 1. Check TTL Cache (valid for 6 hours during market days)
     if use_cache and os.path.exists(cache_path) and os.path.exists(meta_path):
@@ -66,7 +69,7 @@ def fetch_historical_data(symbol: str, period: str = "2y", use_cache: bool = Tru
             cached_time = datetime.fromisoformat(meta.get("cached_at", "1970-01-01T00:00:00"))
             if datetime.now() - cached_time < timedelta(hours=6):
                 df = pd.read_csv(cache_path, parse_dates=["Date"])
-                if len(df) >= 30:
+                if len(df) >= min_required:
                     logger.info(f"Loaded {len(df)} records for {sym} from disk cache.")
                     return df
         except Exception as e:
@@ -77,11 +80,11 @@ def fetch_historical_data(symbol: str, period: str = "2y", use_cache: bool = Tru
     data_source = "Yahoo Finance Genuine Historical Feed"
     try:
         import yfinance as yf
-        logger.info(f"Downloading live historical data for {sym} (period={period})...")
+        logger.info(f"Downloading live historical data for {sym} (period={norm_period})...")
         ticker = yf.Ticker(sym)
-        raw_df = ticker.history(period=period, auto_adjust=False)
+        raw_df = ticker.history(period=norm_period, auto_adjust=False)
 
-        if raw_df is not None and not raw_df.empty and len(raw_df) >= 30:
+        if raw_df is not None and not raw_df.empty and len(raw_df) >= min_required:
             df = raw_df.reset_index()
             # Normalize column names
             df.rename(columns={
@@ -110,9 +113,9 @@ def fetch_historical_data(symbol: str, period: str = "2y", use_cache: bool = Tru
         logger.error(f"Yahoo Finance fetch failed for {sym}: {e}")
 
     # 3. Fallback to calibrated synthetic historical generator if offline / provider blocked
-    if df is None or len(df) < 30:
+    if df is None or len(df) < min_required:
         logger.warning(f"Generating realistic calibrated historical dataset for {sym} (testing/offline mode).")
-        df = generate_calibrated_synthetic_data(sym, period)
+        df = generate_calibrated_synthetic_data(sym, norm_period)
         data_source = "Synthetic Calibrated Historical Walk (Offline Dev Fallback)"
 
     # 4. Save to cache

@@ -182,15 +182,44 @@ def search_stocks(q: str = Query(..., min_length=1)):
 def get_stock_history(symbol: str, period: str = "1y"):
     """
     Retrieves historical OHLCV data with precomputed indicators.
+    Preserves all bars for short periods (1mo, 3mo) without dropping rows.
     """
     sym = symbol.upper().strip()
+    norm_period = "1mo" if period.lower() in ["1m", "1mo"] else period.lower()
     try:
-        df = fetch_historical_data(sym, period=period)
-        clean_df = engineer_features(df, target_horizon=1)
+        import numpy as np
+        df = fetch_historical_data(sym, period=norm_period)
+        
+        df_display = df.copy()
+        df_display.sort_values("Date", ascending=True, inplace=True)
+        df_display.reset_index(drop=True, inplace=True)
+
+        close = df_display["Close"]
+        return_1d = close.pct_change(1).fillna(0.0)
+
+        # Causal RSI (min_periods=1 preserves all bars)
+        delta = close.diff()
+        gain = delta.clip(lower=0)
+        loss = -delta.clip(upper=0)
+        avg_gain = gain.ewm(alpha=1/14, min_periods=1, adjust=False).mean()
+        avg_loss = loss.ewm(alpha=1/14, min_periods=1, adjust=False).mean()
+        rs = avg_gain / (avg_loss + 1e-9)
+        rsi_14 = (100.0 - (100.0 / (1.0 + rs))).fillna(50.0)
+
+        # MACD
+        ema_12 = close.ewm(span=12, min_periods=1, adjust=False).mean()
+        ema_26 = close.ewm(span=26, min_periods=1, adjust=False).mean()
+        macd = (ema_12 - ema_26) / (close + 1e-9)
+        macd_signal = macd.ewm(span=9, min_periods=1, adjust=False).mean()
+
+        # Rolling Volatility
+        prev_close = close.shift(1).bfill()
+        log_ret = np.log(close / (prev_close + 1e-9))
+        vol_20 = (log_ret.rolling(window=min(len(close), 20), min_periods=1).std() * np.sqrt(252)).fillna(0.2)
 
         # Convert to JSON serializable record format
         records = []
-        for _, row in clean_df.iterrows():
+        for i, row in df_display.iterrows():
             records.append({
                 "date": str(row["Date"].strftime("%Y-%m-%d")),
                 "open": round(float(row["Open"]), 2),
@@ -198,23 +227,23 @@ def get_stock_history(symbol: str, period: str = "1y"):
                 "low": round(float(row["Low"]), 2),
                 "close": round(float(row["Close"]), 2),
                 "volume": int(row["Volume"]),
-                "return_1d": round(float(row.get("return_1d", 0.0)) * 100, 2),
-                "rsi_14": round(float(row.get("rsi_14", 50.0)), 2),
-                "macd": round(float(row.get("macd", 0.0)), 4),
-                "macd_signal": round(float(row.get("macd_signal", 0.0)), 4),
-                "volatility_20": round(float(row.get("volatility_20", 0.0)) * 100, 2)
+                "return_1d": round(float(return_1d.iloc[i]) * 100, 2),
+                "rsi_14": round(float(rsi_14.iloc[i]), 2),
+                "macd": round(float(macd.iloc[i]), 4),
+                "macd_signal": round(float(macd_signal.iloc[i]), 4),
+                "volatility_20": round(float(vol_20.iloc[i]) * 100, 2)
             })
 
         profile = get_company_profile(sym)
         latest_close = records[-1]["close"] if records else 0.0
-        prev_close = records[-2]["close"] if len(records) > 1 else latest_close
-        change = round(latest_close - prev_close, 2)
-        change_pct = round((change / (prev_close + 1e-9)) * 100, 2)
+        prev_close_val = records[-2]["close"] if len(records) > 1 else latest_close
+        change = round(latest_close - prev_close_val, 2)
+        change_pct = round((change / (prev_close_val + 1e-9)) * 100, 2)
 
         return {
             "symbol": sym,
             "profile": profile,
-            "period": period,
+            "period": norm_period,
             "latest": {
                 "close": latest_close,
                 "date": records[-1]["date"] if records else "",

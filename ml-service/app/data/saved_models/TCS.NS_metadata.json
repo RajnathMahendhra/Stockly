@@ -1,0 +1,197 @@
+{
+  "symbol": "TCS.NS",
+  "company_profile": {
+    "name": "Tata Consultancy Services Ltd.",
+    "exchange": "NSE",
+    "currency": "INR",
+    "sector": "IT Services",
+    "country": "India",
+    "symbol": "TCS.NS"
+  },
+  "trained_at": "2026-10-28T23:23:47.861529",
+  "total_observations": 446,
+  "train_samples": 356,
+  "test_samples": 90,
+  "date_ranges": {
+    "train_start": "2025-01-08",
+    "train_end": "2026-06-17",
+    "test_start": "2026-06-18",
+    "test_end": "2026-10-27"
+  },
+  "best_model": "naive_baseline",
+  "models": {
+    "naive_baseline": {
+      "mae": 36.3789,
+      "rmse": 47.3868,
+      "directional_accuracy": 0.0,
+      "mape": 1.61,
+      "r2": 0.8939
+    },
+    "linear_regression": {
+      "mae": 985.9761,
+      "rmse": 1036.009,
+      "directional_accuracy": 44.44,
+      "mape": 43.59,
+      "r2": -49.6906
+    },
+    "random_forest": {
+      "mae": 542.4314,
+      "rmse": 676.6451,
+      "directional_accuracy": 44.44,
+      "mape": 24.47,
+      "r2": -20.6233
+    },
+    "xgboost": {
+      "mae": 483.908,
+      "rmse": 637.4363,
+      "directional_accuracy": 45.56,
+      "mape": 21.93,
+      "r2": -18.19
+    },
+    "lstm": {
+      "mae": 447.6635,
+      "rmse": 551.0187,
+      "directional_accuracy": 45.56,
+      "mape": 20.45,
+      "r2": -13.3395
+    }
+  },
+  "feature_importances": {
+    "naive_baseline": [
+      {
+        "feature": "Last_Close_Price",
+        "importance": 100.0,
+        "percentage": 100.0
+      }
+    ],
+    "linear_regression": [
+      {
+        "feature": "sma_50_ratio",
+        "importance": -1105.7732,
+        "percentage": 23.59
+      },
+      {
+        "feature": "macd_hist",
+        "importance": -767.5357,
+        "percentage": 16.38
+      },
+      {
+        "feature": "sma_10_ratio",
+        "importance": 656.117,
+        "percentage": 14.0
+      },
+      {
+        "feature": "macd_signal",
+        "importance": 529.7172,
+        "percentage": 11.3
+      },
+      {
+        "feature": "sma_20_ratio",
+        "importance": 501.3876,
+        "percentage": 10.7
+      },
+      {
+        "feature": "bb_upper_ratio",
+        "importance": -471.1811,
+        "percentage": 10.05
+      },
+      {
+        "feature": "rsi_14",
+        "importance": -361.2244,
+        "percentage": 7.71
+      },
+      {
+        "feature": "bb_lower_ratio",
+        "importance": -293.6472,
+        "percentage": 6.27
+      }
+    ],
+    "random_forest": [
+      {
+        "feature": "volatility_20",
+        "importance": 46.17,
+        "percentage": 46.17
+      },
+      {
+        "feature": "macd_signal",
+        "importance": 21.84,
+        "percentage": 21.84
+      },
+      {
+        "feature": "macd_hist",
+        "importance": 8.24,
+        "percentage": 8.24
+      },
+      {
+        "feature": "bb_upper_ratio",
+        "importance": 7.04,
+        "percentage": 7.04
+      },
+      {
+        "feature": "macd",
+        "importance": 4.99,
+        "percentage": 4.99
+      },
+      {
+        "feature": "sma_20_ratio",
+        "importance": 1.96,
+        "percentage": 1.96
+      },
+      {
+        "feature": "sma_50_ratio",
+        "importance": 1.85,
+        "percentage": 1.85
+      },
+      {
+        "feature": "bb_lower_ratio",
+        "importance": 1.54,
+        "percentage": 1.54
+      }
+    ],
+    "xgboost": [
+      {
+        "feature": "volatility_20",
+        "importance": 19.25,
+        "percentage": 19.25
+      },
+      {
+        "feature": "bb_upper_ratio",
+        "importance": 15.13,
+        "percentage": 15.13
+      },
+      {
+        "feature": "macd_signal",
+        "importance": 12.48,
+        "percentage": 12.48
+      },
+      {
+        "feature": "sma_20_ratio",
+        "importance": 8.54,
+        "percentage": 8.54
+      },
+      {
+        "feature": "macd_hist",
+        "importance": 7.26,
+        "percentage": 7.26
+      },
+      {
+        "feature": "macd",
+        "importance": 7.2,
+        "percentage": 7.2
+      },
+      {
+        "feature": "rsi_14",
+        "importance": 5.08,
+        "percentage": 5.08
+      },
+      {
+        "feature": "sma_50_ratio",
+        "importance": 4.42,
+        "percentage": 4.42
+      }
+    ],
+    "lstm": []
+  },
+  "latest_close": 2496.89990234375,
+  "latest_date": "2026-10-27"
+}

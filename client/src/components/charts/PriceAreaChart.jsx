@@ -77,7 +77,12 @@ const PriceAreaChart = ({
   const padding = (maxPrice - minPrice) * 0.08;
   const yDomain = [Math.max(0, Math.floor(minPrice - padding)), Math.ceil(maxPrice + padding)];
 
-  const periods = ['1mo', '3mo', '6mo', '1y'];
+  const periods = [
+    { id: '1mo', label: '1M' },
+    { id: '3mo', label: '3M' },
+    { id: '6mo', label: '6M' },
+    { id: '1y', label: '1Y' },
+  ];
 
   return (
     <div className="bg-[#111622] border border-[#1e2638] rounded-2xl p-5">
@@ -94,19 +99,26 @@ const PriceAreaChart = ({
         </div>
 
         <div className="flex items-center space-x-1.5 bg-[#0b0f19] p-1 rounded-xl border border-[#1e2638]">
-          {periods.map((p) => (
-            <button
-              key={p}
-              onClick={() => onPeriodChange && onPeriodChange(p)}
-              className={`px-2.5 py-1 text-[11px] font-semibold rounded-lg uppercase transition-all ${
-                currentPeriod === p
-                  ? 'bg-slate-800 text-emerald-400 shadow-sm border border-slate-700'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              {p}
-            </button>
-          ))}
+          {periods.map((p) => {
+            const isSelected =
+              currentPeriod === p.id ||
+              (p.id === '1mo' && (currentPeriod === '1m' || currentPeriod === '1mo')) ||
+              (p.id === '3mo' && (currentPeriod === '3m' || currentPeriod === '3mo')) ||
+              (p.id === '6mo' && (currentPeriod === '6m' || currentPeriod === '6mo'));
+            return (
+              <button
+                key={p.id}
+                onClick={() => onPeriodChange && onPeriodChange(p.id)}
+                className={`px-2.5 py-1 text-[11px] font-semibold rounded-lg uppercase transition-all ${
+                  isSelected
+                    ? 'bg-slate-800 text-emerald-400 shadow-sm border border-slate-700'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                {p.label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
